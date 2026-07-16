@@ -37,9 +37,29 @@
     }
     .note{
       background: white;
-      padding: 10px;
+      padding: 10px 12px;
       margin-bottom: 10px;
       border-radius: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .note-text{
+      flex: 1;
+      margin-right: 10px;
+      word-wrap: break-word;
+    }
+    .note-delete{
+      background: transparent;
+      border: none;
+      color: darkred;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 4px;
+    }
+    .note-delete:hover{
+      background: rgba(255,0,0,0.1);
     }
   </style>
 </head>
@@ -69,25 +89,42 @@
       noteCounter.textContent = count;
     }
 
+
     function addNote(){
       if(inputBox.value.trim() === ""){
         alert("Please write something before adding!");
         return;
       }
+
       let note = document.createElement("div");
       note.classList.add("note");
-      note.textContent = inputBox.value;
+
+      let text = document.createElement("div");
+      text.classList.add("note-text");
+      text.textContent = inputBox.value;
+
+      let deleteButton = document.createElement("button");
+      deleteButton.classList.add("note-delete");
+      deleteButton.textContent = "X";
+      deleteButton.title = "Delete this note";
+      deleteButton.addEventListener("click", function(){
+        note.remove();
+        updateCounter();
+      });
+
+      note.appendChild(text);
+      note.appendChild(deleteButton);
       notesList.appendChild(note);
-      inputBox.value = ""; // clear textarea
-      updateCounter(); // update the counter
+
+      inputBox.value = "";
+      updateCounter();
     }
 
     function removeNotes(){
-      notesList.innerHTML = ""; // clears all notes
-      updateCounter(); // update the counter
+      notesList.innerHTML = "";
+      updateCounter();
     }
 
-    // Initialize counter on page load
     updateCounter();
   </script>
 
